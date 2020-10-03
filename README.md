@@ -1,13 +1,40 @@
+# React Chat App
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Installation
 
-In the project directory, you can run:
+Use the package manager [npm](https://www.npmjs.com/) to install dependencies in the root directory.
 
-### `yarn start`
+```bash
+npm install
+or yarn install
+```
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+To start developing
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+```bash
+npm run start
+or yarn start
+```
+
+To start building
+
+```bash
+npm run build
+```
+
+To start testing
+
+```bash
+npm run test
+```
+
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
