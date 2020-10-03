@@ -1,8 +1,5 @@
 import React from "react";
 import "./App.css";
-
-// import firebase from './FireConfig';
-
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
@@ -30,5 +27,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

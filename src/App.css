@@ -66,6 +66,7 @@ form {
 }
 
 form button {
+  padding: 0.5rem;
   width: 20%;
   background-color: rgb(56, 56, 143);
 }
@@ -99,6 +100,19 @@ button:disabled {
   cursor: not-allowed;
 }
 
+@keyframes spin {
+  0%{
+    transform: rotateZ(0deg);
+  }
+
+  100% {
+    transform:  rotateZ(360deg);
+  }
+}
+
+.loader {
+  animation: spin 0.7s linear infinite forwards ;
+}
 
 .sign-in {
   color: #282c34;
