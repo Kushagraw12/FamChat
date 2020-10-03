@@ -66,9 +66,16 @@ function ChatRoom() {
 
   const [formValue, setFormValue] = useState('');
 
+  const [sendingMsg, setSendingMsg] = useState(false);
 
   const sendMessage = async (e) => {
+    
     e.preventDefault();
+    
+    if(sendingMsg)
+      return;
+
+    setSendingMsg(true);
 
     const { uid, photoURL } = auth.currentUser;
 
@@ -78,6 +85,8 @@ function ChatRoom() {
       uid,
       photoURL
     })
+
+    setSendingMsg(false);
 
     setFormValue('');
     dummy.current.scrollIntoView({ behavior: 'smooth' });
@@ -96,7 +105,15 @@ function ChatRoom() {
 
       <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="say something nice" />
 
-      <button type="submit" disabled={!formValue}>Send</button>
+      <button type="submit" disabled={!(formValue || sendingMsg)}>
+        {sendingMsg ?
+          <svg className="loader" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 16C3 8.8203 8.8203 3 16 3C23.1797 3 29 8.8203 29 16C29 23.1797 23.1797 29 16 29" stroke="white" stroke-width="5"/>
+          </svg>
+          :
+          "Send"
+        }
+      </button>
 
     </form>
   </>)
