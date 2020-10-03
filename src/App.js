@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import './App.css';
 
-import firbs from './FireConfig';
+import firebaseConfig from './FireConfig';
 
 import firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -10,13 +10,13 @@ import 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
-firebase.initializeApp( firbs )
+firebase.initializeApp(firebaseConfig)
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
 
-function App() {
+function App () {
 
   const [user] = useAuthState(auth);
 
@@ -35,7 +35,7 @@ function App() {
   );
 }
 
-function SignIn() {
+function SignIn () {
 
   const signInWithGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -50,14 +50,14 @@ function SignIn() {
 
 }
 
-function SignOut() {
+function SignOut () {
   return auth.currentUser && (
     <button className="sign-out" onClick={() => auth.signOut()}>Sign Out</button>
   )
 }
 
 
-function ChatRoom() {
+function ChatRoom () {
   const dummy = useRef();
   const messagesRef = firestore.collection('messages');
   const query = messagesRef.orderBy('createdAt').limit(25);
@@ -103,7 +103,7 @@ function ChatRoom() {
 }
 
 
-function ChatMessage(props) {
+function ChatMessage (props) {
   const { text, uid, photoURL } = props.message;
 
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
