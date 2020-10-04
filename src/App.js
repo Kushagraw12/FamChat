@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
 
 import firbs from './FireConfig';
@@ -9,6 +9,7 @@ import 'firebase/auth';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { Delete, Loader } from './Icons';
 
 firebase.initializeApp( firbs )
 
@@ -60,13 +61,15 @@ function SignOut() {
 function ChatRoom() {
   const dummy = useRef();
   const messagesRef = firestore.collection('messages');
-  const query = messagesRef.orderBy('createdAt').limit(25);
+  const query = messagesRef.orderBy('createdAt',"desc").limit(25);
 
   const [messages] = useCollectionData(query, { idField: 'id' });
 
   const [formValue, setFormValue] = useState('');
 
   const [sendingMsg, setSendingMsg] = useState(false);
+
+  const [lastMessageId,setLastMessageId] = useState(null);
 
   const sendMessage = async (e) => {
     
@@ -92,10 +95,25 @@ function ChatRoom() {
     dummy.current.scrollIntoView({ behavior: 'smooth' });
   }
 
+  const deleteMessage = async (id) => {
+    await firestore.collection("messages").doc(id).delete();
+  }
+
+  if(messages){
+    messages.reverse();
+  }
+
+  useEffect(()=>{
+    if(messages && messages.length && lastMessageId !== messages[messages.length-1].id){
+      setLastMessageId(messages[messages.length-1].id)
+      dummy.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  },[lastMessageId,messages]);
+  
   return (<>
     <main>
 
-      {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+      {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} deleteMessage={deleteMessage} />)}
 
       <span ref={dummy}></span>
 
@@ -107,9 +125,7 @@ function ChatRoom() {
 
       <button type="submit" disabled={!(formValue || sendingMsg)}>
         {sendingMsg ?
-          <svg className="loader" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 16C3 8.8203 8.8203 3 16 3C23.1797 3 29 8.8203 29 16C29 23.1797 23.1797 29 16 29" stroke="white" stroke-width="5"/>
-          </svg>
+          <Loader/>
           :
           "Send"
         }
@@ -121,17 +137,41 @@ function ChatRoom() {
 
 
 function ChatMessage(props) {
-  const { text, uid, photoURL } = props.message;
+  const { text, uid, photoURL,id } = props.message;
+  const [isSelected,setSelected] = useState(false);
+  const [isDeleting,setDeleting] = useState(false);
+  const isAuthor = uid === auth.currentUser.uid;
+  const deleteMessage = props.deleteMessage;
+  const messageClass = isAuthor ? 'sent' : 'received';
 
-  const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
+  const selectedClass = isSelected ? 'selected' : '';
 
+  const deleteMsg = () => {
+    setDeleting(true);
+    deleteMessage(id)
+    .catch(e=>{
+      console.log(e);
+    });
+  }
   return (<>
-    <div className={`message ${messageClass}`}>
+    <div className={`message ${messageClass} ${selectedClass}`}>
       <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} alt='Face' />
-      <p>{text}</p>
+      <p
+        onClick={isAuthor ? ()=>setSelected(!isSelected) : null}
+      >{text}</p>
     </div>
+    { isSelected && 
+        <div className="tools">
+          <span>
+            {isDeleting ?
+              <Loader/>
+              :
+              <Delete onClick={deleteMsg}/>
+            }
+          </span>
+        </div>
+      }
   </>)
 }
-
 
 export default App;

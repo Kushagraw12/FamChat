@@ -34,7 +34,6 @@ body {
 }
 
 main {
-  padding: 10px;
   height: 80vh;
   margin: 10vh 0 10vh;
   overflow-y: scroll;
@@ -143,9 +142,30 @@ p {
 .message {
   display: flex;
   align-items: center;
+  padding: 10px;
 }
 
+.message:hover {
+  background-color: #18171723;
+}
+.message.selected {
+  background-color: #18171779;
+}
 
+.message p:hover {
+  cursor: pointer;
+}
+
+.tools {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content:flex-start;
+}
+.tools svg {
+  cursor: pointer;
+  margin: 0.5rem 1rem;
+}
 .sent {
   flex-direction: row-reverse;
 }
