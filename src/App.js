@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { createRef,useRef,useState } from 'react';
 import './App.css';
 
 import firbs from './FireConfig';
@@ -69,8 +69,6 @@ function ChatRoom() {
 
   const [sendingMsg, setSendingMsg] = useState(false);
 
-  const [lastMessageId,setLastMessageId] = useState(null);
-
   const sendMessage = async (e) => {
     
     e.preventDefault();
@@ -92,31 +90,14 @@ function ChatRoom() {
     setSendingMsg(false);
 
     setFormValue('');
+    
     dummy.current.scrollIntoView({ behavior: 'smooth' });
   }
-
-  const deleteMessage = async (id) => {
-    await firestore.collection("messages").doc(id).delete();
-  }
-
-  if(messages){
-    messages.reverse();
-  }
-
-  useEffect(()=>{
-    if(messages && messages.length && lastMessageId !== messages[messages.length-1].id){
-      setLastMessageId(messages[messages.length-1].id)
-      dummy.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  },[lastMessageId,messages]);
   
   return (<>
     <main>
-
-      {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} deleteMessage={deleteMessage} />)}
-
+      <MessageList messages={messages ? messages : []} />
       <span ref={dummy}></span>
-
     </main>
 
     <form onSubmit={sendMessage}>
@@ -135,7 +116,35 @@ function ChatRoom() {
   </>)
 }
 
+class MessageList extends React.Component{
+  dummy = createRef();
+  lastMessageId = null
+  deleteMessage = async (id) => {
+    await firestore.collection("messages").doc(id).delete();
+  }
+  shouldComponentUpdate(nextProps){
+    const newMessags = nextProps.messages;
+    const messages = this.props.messages;
+    if(newMessags.length !== messages.length){
+      return true;
+    }  
 
+    for(let i = 0; i < newMessags.length ; i++){
+      if(newMessags[i].id !== messages[i].id){
+        return true;
+      }
+    }
+    return false;
+  }
+  render(){
+    const {messages} = this.props;
+    return (
+      <>
+      {messages && messages.reverse().map(msg => <ChatMessage key={msg.id} message={msg} deleteMessage={this.deleteMessage} />)}
+      </>
+    )
+  }
+}
 function ChatMessage(props) {
   const { text, uid, photoURL,id } = props.message;
   const [isSelected,setSelected] = useState(false);
