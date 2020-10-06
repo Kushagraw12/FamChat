@@ -1,7 +1,7 @@
 import React, { createRef,useRef,useState } from 'react';
 import './App.css';
 
-import firbs from './FireConfig';
+import firbaseConfig from './FireConfig';
 
 import firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -11,7 +11,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { Delete, Loader } from './Icons';
 
-firebase.initializeApp( firbs )
+firebase.initializeApp( firbaseConfig )
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
@@ -62,9 +62,9 @@ function ChatRoom() {
   const dummy = useRef();
   const messagesRef = firestore.collection('messages');
   const query = messagesRef.orderBy('createdAt',"desc").limit(150); //This line affects the limit that the participants can send. Implemented to stop spamming. 
-
+  
   const [messages] = useCollectionData(query, { idField: 'id' });
-
+  
   const [formValue, setFormValue] = useState('');
 
   const [sendingMsg, setSendingMsg] = useState(false);
@@ -101,7 +101,7 @@ function ChatRoom() {
     </main>
 
     <form onSubmit={sendMessage}>
-
+      
       <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Type your message!" />
 
       <button type="submit" disabled={!(formValue || sendingMsg)}>
@@ -140,7 +140,7 @@ class MessageList extends React.Component{
     const {messages} = this.props;
     return (
       <>
-      {messages && messages.reverse().map(msg => <ChatMessage key={msg.id} message={msg} deleteMessage={this.deleteMessage} />)}
+      {messages && messages.reverse().map(msg => <ChatMessage key={msg.id} message={msg} deleteMessage={this.deleteMessage} />)} 
       </>
     )
   }
