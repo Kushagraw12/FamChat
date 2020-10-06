@@ -61,7 +61,7 @@ function SignOut() {
 function ChatRoom() {
   const dummy = useRef();
   const messagesRef = firestore.collection('messages');
-  const query = messagesRef.orderBy('createdAt',"desc").limit(25);
+  const query = messagesRef.orderBy('createdAt',"desc").limit(150); //This line affects the limit that the participants can send. Implemented to stop spamming. 
 
   const [messages] = useCollectionData(query, { idField: 'id' });
 
