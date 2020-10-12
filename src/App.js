@@ -146,7 +146,6 @@ class MessageList extends React.Component{
   }
 }
 function ChatMessage(props) {
-  console.log('P>', props)
   const { text, uid, photoURL, id, createdAt } = props.message;
   const [isSelected,setSelected] = useState(false);
   const [isDeleting,setDeleting] = useState(false);
