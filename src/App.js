@@ -146,12 +146,15 @@ class MessageList extends React.Component{
   }
 }
 function ChatMessage(props) {
-  const { text, uid, photoURL,id } = props.message;
+  console.log('P>', props)
+  const { text, uid, photoURL, id, createdAt } = props.message;
   const [isSelected,setSelected] = useState(false);
   const [isDeleting,setDeleting] = useState(false);
   const isAuthor = uid === auth.currentUser.uid;
   const deleteMessage = props.deleteMessage;
   const messageClass = isAuthor ? 'sent' : 'received';
+  const date = new Date(createdAt.seconds * 1000);
+  const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
   const selectedClass = isSelected ? 'selected' : '';
 
@@ -164,10 +167,16 @@ function ChatMessage(props) {
   }
   return (<>
     <div className={`message ${messageClass} ${selectedClass}`}>
-      <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} alt='Face' />
-      <p
-        onClick={isAuthor ? ()=>setSelected(!isSelected) : null}
-      >{text}</p>
+      <div className="message-time">
+        <small>{time}</small>
+      </div>
+      <div className="message-text">
+        <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} alt='Face' />
+        <p
+          onClick={isAuthor ? ()=>setSelected(!isSelected) : null}
+        >{text}
+        </p>
+      </div>
     </div>
     { isSelected && 
         <div className="tools">

@@ -138,11 +138,27 @@ p {
   color: white;
   text-align: center;
 }
-
 .message {
+  align-items: flex-end;
+}
+
+.message,
+.message-text {
   display: flex;
-  align-items: center;
   padding: 10px;
+}
+.message-text {
+  align-items: center;
+}
+.received .message-time {
+  margin-left: 60px;
+}
+.sent .message-time {
+  margin-right: 60px;
+}
+
+.message-time {
+  font-size: 0.8rem;
 }
 
 .message:hover {
@@ -156,6 +172,14 @@ p {
   cursor: pointer;
 }
 
+.message:hover + .message-time {
+  display: inline;
+}
+.message-time {
+  color: #7a7882;
+  position: absolute;
+}
+
 .tools {
   width: 100%;
   display: flex;
@@ -167,6 +191,9 @@ p {
   margin: 0.5rem 1rem;
 }
 .sent {
+  justify-content: flex-end;
+}
+.sent .message-text {
   flex-direction: row-reverse;
 }
 
