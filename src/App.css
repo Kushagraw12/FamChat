@@ -120,9 +120,6 @@ button:disabled {
   margin: 0 auto;
 }
 
-
-
-
 ul, li {
   text-align: left;
   list-style: none;
@@ -144,20 +141,24 @@ p {
 
 .message,
 .message-text {
-  display: flex;
-  padding: 10px;
+  display: inline-flex;
+  padding: 5px;
 }
+
 .message-text {
   align-items: center;
 }
+
 .received .message-time {
-  margin-left: 60px;
+  margin-left: 5px;
+  align-items: left;
 }
 .sent .message-time {
-  margin-right: 60px;
+  padding-right: 0px;
+  align-items: right;
 }
 
-.message-time {
+cite {
   font-size: 0.8rem;
 }
 
@@ -176,8 +177,7 @@ p {
   display: inline;
 }
 .message-time {
-  color: #7a7882;
-  position: absolute;
+  color: #000;
 }
 
 .tools {
@@ -196,7 +196,6 @@ p {
 .sent .message-text {
   flex-direction: row-reverse;
 }
-
 .sent p {
   color: white;
   background: #0b93f6;

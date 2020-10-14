@@ -78,7 +78,7 @@ function ChatRoom() {
 
     setSendingMsg(true);
 
-    const { uid, photoURL } = auth.currentUser;
+    const { uid, photoURL} = auth.currentUser;
 
     await messagesRef.add({
       text: formValue,
@@ -111,7 +111,7 @@ function ChatRoom() {
           "Send"
         }
       </button>
-
+      
     </form>
   </>)
 }
@@ -153,8 +153,10 @@ function ChatMessage(props) {
   const deleteMessage = props.deleteMessage;
   const messageClass = isAuthor ? 'sent' : 'received';
   const date = new Date(createdAt.seconds * 1000);
-  const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
+  console.log(createdAt, "CR")
+  const time = date.toLocaleTimeString([], { day: '2-digit', hour: '2-digit', minute: '2-digit' });
+  const time2 = date.toTimeString([], { dateStyle: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', timeZoneName: 'short'});
+  
   const selectedClass = isSelected ? 'selected' : '';
 
   const deleteMsg = () => {
@@ -166,17 +168,18 @@ function ChatMessage(props) {
   }
   return (<>
     <div className={`message ${messageClass} ${selectedClass}`}>
-      <div className="message-time">
-        <small>{time}</small>
-      </div>
       <div className="message-text">
         <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} alt='Face' />
         <p
           onClick={isAuthor ? ()=>setSelected(!isSelected) : null}
         >{text}
+        <br />
+        <cite className='message-time'><>Sent: {time}</></cite>
         </p>
+        
       </div>
     </div>
+
     { isSelected && 
         <div className="tools">
           <span>
