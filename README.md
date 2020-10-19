@@ -1,5 +1,6 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-###Running the project
+
+## Running the project
 Before cloning the project make sure you have created a firebase project on
 [Firebase Console](http://console.firebase.google.com)
 
@@ -13,7 +14,7 @@ Head inside the cloned folder and install the dependencies using NPM
 
 ```sh
 $ cd React-Chat-App
-$ yarn install
+$ yarn / npm install
 ```
 
 Next create a .env file in the root of the project directory, this is where you
@@ -35,7 +36,7 @@ REACT_APP_MEAS_ID=
 Start the project:
 
 ```
-yarn start
+yarn start / npm install
 ```
 
 Runs the app in the development mode.<br />
